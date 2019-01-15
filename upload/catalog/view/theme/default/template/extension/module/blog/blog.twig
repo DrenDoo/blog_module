@@ -1,0 +1,48 @@
+{{ header }}
+<div id="information-information" class="container">
+    <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="row">{{ column_left }}
+        {% if column_left and column_right %}
+            {% set class = 'col-sm-6' %}
+        {% elseif column_left or column_right %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+        <div id="content" class="{{ class }}">
+            {{ content_top }}
+
+
+            {% for post in posts %}
+
+                <div class="post" style="max-width: 60%; word-wrap: break-word;">
+                    <h3><b>"{{ post.name }}"</b><i> by {{ post.firstname }} {{ post.lastname }}</i> </h3>{% if customer_id == post.user_id %}
+                    <a href="{{ edit_link }}{{ post.id_news }}"><button class="btn btn-sm btn-primary">{{ edit }}</button></a>
+                    <a href="{{ delete_link }}{{ post.id_news }}" onclick="return confirmDelete()"><button class="btn btn-sm btn-warning">{{ delete }}</button></a>
+
+                    {% endif %}
+                    <br />
+                    <p>{{ post.description }}</p>
+                    <br />
+                </div>
+
+            {% endfor %}
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+{{ footer }}
+    <script>
+        function confirmDelete() {
+            if(confirm("Delete this item?")){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>

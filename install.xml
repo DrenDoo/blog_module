@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>blog</name>
+    <code>blog</code>
+    <description>Blog module for promodex</description>
+    <version>1</version>
+    <author>DrenDoo</author>
+    <link>vk.com/drendoo</link>
+    <file path="catalog/controller/account/account.php">
+        <operation error="skip">
+            <search><![CDATA[$data['recurring'] = $this->url->link('account/recurring', '', true);]]></search>
+            <add position="after"><![CDATA[
+            //Blog module
+        if ($this->config->get('module_blog_status')) {
+            $this->load->language("extension/module/blog");
+            $data['blog'] = $this->url->link('extension/module/blog', '', true);
+            $data['blog_add'] = $this->url->link('extension/module/blog/add', '', true);
+        }
+        //blog module end
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/default/template/account/account.twig">
+        <operation error="skip">
+            <search><![CDATA[<li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>]]></search>
+            <add position="after"><![CDATA[
+      </ul>
+            <!-- Blog module -->
+      {% if account_blog %}
+      <h2>{{ account_blog }}</h2>
+      <ul class="list-unstyled">
+        <li><a href="{{ blog }}">{{ account_blog_posts }}</a></li>
+      </ul>
+      <ul class="list-unstyled">
+        <li><a href="{{ blog_add }}">{{ account_blog_add }}</a></li>
+      {% endif %}
+      <!-- Blog module end -->
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/default/template/common/header.twig">
+        <operation error="skip">
+            <search><![CDATA[<ul class="list-inline">]]></search>
+            <add position="after"><![CDATA[
+            <!-- Blog Module -->
+        <li><a href="{{ posts }}" title="{{ posts_text }}"><i class="fa fa-newspaper-o"></i> <span class="hidden-xs hidden-sm hidden-md">{{ posts_text }}</span></a></li>
+        <!-- Blog Module end -->
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/simplica/template/common/header.twig">
+        <operation error="skip">
+            <search><![CDATA[<ul class="list-inline">]]></search>
+            <add position="after"><![CDATA[
+            <!-- Blog Module -->
+        <li><a href="{{ posts }}" title="{{ posts_text }}"><i class="fa fa-newspaper-o"></i> <span class="hidden-xs hidden-sm hidden-md">{{ posts_text }}</span></a></li>
+        <!-- Blog Module end -->
+            ]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/common/header.php">
+        <operation error="skip">
+            <search><![CDATA[$data['menu'] = $this->load->controller('common/menu');]]></search>
+            <add position="after"><![CDATA[
+            //Blog module
+        if ($this->config->get('module_blog_status')){
+            $this->load->language("extension/module/blog");
+            $data['posts'] = $this->url->link('extension/module/blog/news', '', true);
+        }
+		//Blog module end
+            ]]></add>
+        </operation>
+    </file>
+</modification>
